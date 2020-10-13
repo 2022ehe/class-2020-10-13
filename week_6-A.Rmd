@@ -69,8 +69,15 @@ Let's follow that same intuition in the case of the urn. We have an urn with 1,0
 * Still using a tibble with those 7 rows, call `rbinom()` with `n = 10`. (This may require other changes in your code.) Turn the resulting tibble, in which `numb_red_paddle` is a list column into an easier-to-work-with tibble in which `numb_red_paddle` is an integer. Hint: `unnest()`. Interpret the resulting object.
 
 ```{r sc 3}
-tibble(numb_red_urn = seq(100, 700, 100)) %>%
-  mutate(numb_red_paddle = map_int(numb_red_urn, ~rbinom(1, size = 25, prob = ./1000)))
+tibble(numb_red_urn = 400) %>% 
+  mutate(numb_red_paddle = rbinom(n = 1, size = 25, prob = numb_red_urn/1000))
+
+tibble(numb_red_urn = seq(100, 700, by = 100)) %>% 
+  mutate(numb_red_paddle = map_int(numb_red_urn, ~ rbinom(n = 1, size = 25, prob = ./1000)))
+
+tibble(numb_red_urn = seq(100, 700, by = 100)) %>% 
+  mutate(numb_red_paddle = map(numb_red_urn, ~ rbinom(n = 10, size = 25, prob = ./1000))) %>% 
+  unnest(numb_red_paddle)
 
 ```
 
